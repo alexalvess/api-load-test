@@ -36,10 +36,12 @@ async function run() {
                 }
             };
 
-            if((item.route as string).indexOf('{')) {
-
-            }
+            const variables: string[] = (item.route as string).match(/\{([^}]*)}/g);
             
+            variables.forEach((variable) => {
+                var randomData = loadRandomData(item.parameters[variable.match(/\{([^}]*)}/)[1]])
+                item.route.replace(variable, randomData);
+            });
         });
 
     } catch (error) {
