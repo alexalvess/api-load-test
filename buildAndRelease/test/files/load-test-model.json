@@ -1,0 +1,31 @@
+{
+	"parameters": {
+		"id": [135, 136, 138, 139, 143, 144],
+		"name": ["Jhon Fernando", "Karlos Frank", "Alexandro Silva", "Alfred Gordon"],
+		"birthDate": ["1995-02-25", "1994-02-25", "1993-02-25", "1998-02-25"],
+		"nin": ["39447407005", "50515320048", "30794222013", "00318493004"],
+		"password": ["123456", "ii1u2y318723", "@asdasd234"]
+	},
+	"testCases": [
+		{
+			"route": "/api/users/{id}",
+			"vus": [1, 5],
+			"time": [2, 60],
+			"verb": "get",
+			"statusCodeExpect": [200, 204]
+		},
+		{
+			"route": "/api/users",
+			"vus": [1, 5],
+			"time": [2, 60],
+			"verb": "post",
+			"payload": {
+				"name": "{name}",
+				"birthDate": "{birthDate}",
+				"nin": "{nin}",
+				"password": "{password}"
+			},
+			"statusCodeExpect": [200, 201]
+		}
+	]
+}
