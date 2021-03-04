@@ -1,0 +1,55 @@
+{
+    "manifestVersion": 1,
+    "id": "task-45D40E5F-142B-4327-95C7-B16BB3BF19B7",
+    "name": "API Load Test",
+    "version": "0.0.1",
+    "publisher": "AlexAlves",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "A tool to run load test in APIs.",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "branding": {
+        "color": "rgb(223, 78, 78)",
+        "theme": "light"
+    },
+    "public": false,
+    "tags": [
+        "test",
+        "load test",
+        "api"
+    ],
+    "content": {
+        "details": {
+            "path": "README.md"
+        }
+    },
+    "icons": {
+        "default": "images/icon.png"
+    },
+    "files": [
+        {
+            "path": "dist"
+        }
+    ],
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/alexalvess/api-load-test"
+    },
+    "contributions": [
+        {
+            "id": "custom-task-coverage-api-test",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "dist"
+            }
+        }
+    ]
+}

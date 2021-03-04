@@ -10,8 +10,8 @@ async function run() {
         let baseAddress: string | undefined;
 
         if(environment.production) {
-            filePath = tl.getInput('filePath', true);
             baseAddress  = tl.getInput('baseAddress', true);
+            filePath = tl.getInput('filePath', true);
         } else {
             filePath = environment.filePath;
             baseAddress = environment.baseAddress;

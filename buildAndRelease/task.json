@@ -1,0 +1,40 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
+    "id": "45D40E5F-142B-4327-95C7-B16BB3BF19B7",
+    "name": "APILoadTest",
+    "friendlyName": "API Load Test",
+    "description": "To do load tests in API according to the JSON file format.",
+    "helpMarkDown": "",
+    "category": "Test",
+    "author": "Alex Alves",
+    "version": {
+      "Major": 0,
+      "Minor": 1,
+      "Patch": 1
+    },
+    "instanceNameFormat": "API Load Test",
+    "groups": [ ],
+    "inputs": [
+      {
+        "name": "baseAddress",
+        "type": "string",
+        "label": "API url/host:",
+        "defaultValue": "",
+        "required": true,
+        "helpMarkDown": "For example: https://{url}/"
+      },
+      {
+        "name": "filePath",
+        "type": "string",
+        "label": "JSON model test file",
+        "defaultValue": "",
+        "required": true
+      }
+    ],
+    "execution": {
+      "Node10": {
+        "target": "index.js"
+      }
+    }
+  }
+  
