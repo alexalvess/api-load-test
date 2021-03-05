@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "task-45D40E5F-142B-4327-95C7-B16BB3BF19B7",
     "name": "API Load Test",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "AlexAlves",
     "targets": [
         {
@@ -14,7 +14,7 @@
         "Azure Pipelines"
     ],
     "branding": {
-        "color": "rgb(223, 78, 78)",
+        "color": "rgb(223, 118, 118)",
         "theme": "light"
     },
     "public": false,
