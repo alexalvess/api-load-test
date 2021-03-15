@@ -6,6 +6,82 @@ const exec = require('child_process').exec;
 
 async function run() {
     try {
+        let scriptExists = fs.existsSync('./script.js');
+        if(!scriptExists){
+           fs.appendFile('./script.js',`
+import http from 'k6/http';
+import { check } from 'k6';
+
+export default function() {
+    let baseAddress = __ENV.BASE_ADDRESS;
+    let route = __ENV.ROUTE;
+    let verb = __ENV.VERB;
+    let dataParameters = JSON.parse(__ENV.DATA_PARAMETERS);
+    let checks = JSON.parse(__ENV.STATUS_CODE_EXPECT);
+    let payload;
+
+    try {
+        payload = JSON.parse(__ENV.PAYLOAD);
+    } catch (error) { }
+
+    const params = {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+
+    route = normalizeRoute(route, dataParameters);
+    payload = normalizePayload(payload, dataParameters);
+    const url = \`\${baseAddress}/\${route}\`;
+
+    if(payload)
+        payload = JSON.stringify(payload);
+
+    let response = http[verb.toLowerCase()](url, payload, params);
+
+    check(response, {
+        [\`is status code \${checks.join(' or ')} from route \${verb.toUpperCase()} \${route}\`]: (r) => checks.includes(r.status)
+    });
+}
+
+function normalizePayload(payload, dataParameters) {
+    if(!payload)
+        return;
+
+    Object.keys(payload).forEach(key => {
+        const value = payload[key];
+        const valueNormalized = value.match(/\{([^}]*)}/)[1];
+
+        payload[key] = loadRandomData(dataParameters[valueNormalized]);
+    });
+
+    return payload;
+}
+
+function normalizeRoute(route, dataParameters) {
+    const variables = (route).match(/\{([^}]*)}/g);
+
+    if(!variables)
+        return route;
+
+    variables.forEach((variable) => {
+        var randomData = loadRandomData(dataParameters[variable.match(/\{([^}]*)}/)[1]])
+        route = route.replace(variable, randomData);
+    });
+
+    return route;
+}
+
+function loadRandomData(list) {
+    let randomData = list[Math.floor(Math.random() * list.length)];
+    return randomData;
+}
+           `, (err: any) => {
+               if(err) throw err;
+               console.log('######## Script for k6 was created.');
+           }); 
+        }
+
         let filePath: string | undefined;
         let baseAddress: string | undefined;
 
@@ -74,7 +150,7 @@ async function run() {
             console.log("✔ Base address, route, verb, parameters, payload format, and status codes expected were added on environment variables.");
 
             (item.vus as []).forEach((vu: any, vu_index: number) => {
-                const reportFileName = `../dist/test_result_${index + 1}_${vu_index + 1}.json`;
+                const reportFileName = `test_result_${index + 1}_${vu_index + 1}.json`;
                 const envs = {
                     report: `--summary-export=${reportFileName}`,
                     vu: `--vus=${vu}`,
@@ -82,7 +158,7 @@ async function run() {
                 };
 
                 exec(
-                    `k6 run ${envs.report} ${envs.vu} ${envs.duration} ../dist/script.js`, 
+                    `k6 run ${envs.report} ${envs.vu} ${envs.duration} script.js`, 
                     (error: any, stdout: any, stderr: any) => {
                         if(error || (stderr && stderr.includes('level=error'))) {
                             console.error(error, stderr);

@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "task-45D40E5F-142B-4327-95C7-B16BB3BF19B7",
     "name": "API Load Test",
-    "version": "0.0.2",
+    "version": "0.0.11",
     "publisher": "AlexAlves",
     "targets": [
         {
